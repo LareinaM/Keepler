@@ -1,2 +1,2 @@
 # Keepler
-Note-taking web app with back&front-end
+Note-taking web app with both back & front-ends
