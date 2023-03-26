@@ -1,28 +1,26 @@
-const mongoose = require("mongoose");
-mongoose.set('strictQuery', false);
-const uri = process.env.ATLAS_URI;
-const noteSchema = new mongoose.Schema({
-  title: String,
-  content: String,
-  time: Date
+const { MongoClient } = require("mongodb");
+const Db = process.env.ATLAS_URI;
+const client = new MongoClient(Db, {
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
 });
+ 
 var _db;
-const Note = mongoose.model('Note', noteSchema);
+ 
 module.exports = {
-  connectToServer: function () {
-    mongoose.connect(uri);
-    _db = mongoose.connection;
-    _db.on('error', function (err) {
-      console.log('Error occured' + err)
-    });
-    _db.once('connected', function () {
-      console.log('connection is successful to ' + uri)
-    });
+  connectToServer: function (callback) {
+    client.connect(function (err, db) {
+      // Verify we got a good "db" object
+      if (db)
+      {
+        _db = db.db("Notes");
+        console.log("Successfully connected to MongoDB."); 
+      }
+      return callback(err);
+         });
   },
+ 
   getDb: function () {
     return _db;
   },
-  getSchema: function() {
-    return Note;
-  }
 };
