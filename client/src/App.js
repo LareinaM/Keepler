@@ -9,32 +9,20 @@ function App() {
   const [notesArr, setArr] = useState([]);
 
   useEffect(() => {
-    async function getRecords() {
-      const response = await fetch('http://localhost:5000/');
-      if (!response.ok) {
-        const message = `An error occurred: ${response.statusText}`;
-        window.alert(message);
-        return;
-      }
-
-      const records = await response.json();
-      setArr(records);
-    }
-    getRecords();
-    return;
-  }, [notesArr.length]);
+    fetch('http://localhost:5000/')
+      .then(response => response.json())
+      .then(actualData => setArr(actualData));
+  }, []);
 
   async function deleteItem(tarId) {
     await fetch(`http://localhost:5000/${tarId}`, {
       method: "DELETE"
     });
-    console.log("Delete ", tarId);
     setArr(prev => {
       return prev.filter((note, idx) => {
         return note._id !== tarId;
       })
     });
-    console.log(notesArr.length)
   }
 
   function notesList() {
@@ -47,9 +35,8 @@ function App() {
     <div>
       <Header />
       <Routes>
-        <Route exact path="/" element={<><CreateArea />{notesList()}</>} />
+        <Route exact path="/" element={<><CreateArea addFunc={setArr} />{notesList()}</>} />
       </Routes>
-
       <Footer />
     </div>
   );
