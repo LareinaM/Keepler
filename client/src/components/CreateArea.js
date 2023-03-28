@@ -49,14 +49,10 @@ function CreateArea(props) {
         }
     }
 
-    function expand() {
-        setExpanded(true);
-    }
-
     return (
         <div>
             <form method="post" className="create-note">
-                <input onClick={expand} onChange={set} name="title" placeholder="Title" value={note.title} />
+                <input onClick={() => { setExpanded(true) }} onChange={set} name="title" placeholder="Title" value={note.title} />
                 {isExpanded &&
                     <textarea
                         onChange={set}

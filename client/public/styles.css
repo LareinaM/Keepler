@@ -50,7 +50,7 @@ footer p {
   margin-bottom: 6px;
 }
 .note p {
-  font-size: 1.1em;
+  font-size: 0.9em;
   margin-bottom: 10px;
   white-space: pre-wrap;
   word-wrap: break-word;
@@ -77,8 +77,8 @@ form.create-note {
   border-radius: 7px;
   box-shadow: 0 1px 5px rgb(138, 137, 137);
 }
-form.create-note input,
-form.create-note textarea {
+
+form.create-note input, form.create-note textarea {
   width: 100%;
   border: none;
   padding: 4px;
@@ -87,7 +87,7 @@ form.create-note textarea {
   font-family: inherit;
   resize: none;
 }
-form.create-note button {
+form.create-note button{
   position: absolute;
   right: 18px;
   bottom: -18px;
@@ -98,6 +98,49 @@ form.create-note button {
   width: 36px;
   height: 36px;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+  cursor: pointer;
+  outline: none;
+}
+
+form.edit-note {
+  background: #fff;
+  border-radius: 7px;
+  box-shadow: 0 2px 5px #ccc;
+  padding: 10px;
+  width: 240px;
+  margin: 16px;
+  float: left;
+}
+
+form.edit-note input, form.edit-note textarea {
+  width: 100%;
+  border: none;
+  outline: none;
+  font-size: 1.2em;
+  font-family: inherit;
+  resize: none;
+}
+
+form.edit-note input {
+  font-weight: bold;
+  font-size: 1.1em;
+  margin-bottom: 6px;
+}
+form.edit-note textarea {
+  font-size: 0.9em;
+  margin-bottom: 10px;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+}
+
+form.edit-note button {
+  position: relative;
+  float: right;
+  margin-right: 10px;
+  color: #f5ba13;
+  border: none;
+  width: 36px;
+  height: 36px;
   cursor: pointer;
   outline: none;
 }

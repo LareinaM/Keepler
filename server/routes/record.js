@@ -24,17 +24,13 @@ recordRoutes.route("/").get(function (req, res) {
 
 recordRoutes.route("/").post(function (req, response) {
     let db_connect = db_conn.getDb();
-    let myobj = {
-        title: req.body.title,
-        content: req.body.content,
-    };
     db_connect
         .collection("records")
-        .insertOne(myobj, function (err, res) {
+        .insertOne(req.body, function (err, res) {
             if (err) {
                 throw err;
             } else {
-                console.log("Add one obj", myobj)
+                console.log("Add one obj")
             }
             response.json(res);
         });
@@ -49,6 +45,20 @@ recordRoutes.route("/:tarId").delete((req, response) => {
         console.log("1 document deleted");
         response.json(obj);
     });
+});
+
+recordRoutes.route("/update/:id").post((req, response) => {
+    let db_connect = db_conn.getDb();
+    db_connect
+        .collection("records")
+        .updateOne({ _id: ObjectId(req.params.id) }, { $set: req.body }, function (err, res) {
+            if (err) {
+                throw err;
+            } else {
+                console.log("1 obj updated", req.params.id)
+            }
+            response.json(res);
+        });
 });
 
 module.exports = recordRoutes;
