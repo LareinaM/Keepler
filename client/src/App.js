@@ -27,7 +27,7 @@ function App() {
 
   function notesList() {
     return notesArr.map((note, idx) => {
-      return <Note key={idx} id={note._id} title={note.title} content={note.content} deleteItem={() => deleteItem(note._id)}></Note>
+      return <Note key={note._id} id={note._id} title={note.title} content={note.content} modifiedDate={note.modifiedDate} deleteItem={() => deleteItem(note._id)}></Note>
     });
   }
 
@@ -35,7 +35,11 @@ function App() {
     <div>
       <Header />
       <Routes>
-        <Route exact path="/" element={<><CreateArea addFunc={setArr} />{notesList()}</>} />
+        <Route exact path="/" element={
+          <>
+            <CreateArea addFunc={setArr} />
+            {notesList()}
+          </>} />
       </Routes>
       <Footer />
     </div>

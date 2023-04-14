@@ -56,6 +56,17 @@ footer p {
   word-wrap: break-word;
 }
 
+.note .dateCreated{
+  position: relative;
+  float: left;
+  margin-bottom: 0;
+  margin-top: 25px;
+  font-size: 11px;
+  color: lightgray;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+}
+
 .note button {
   position: relative;
   float: right;

@@ -2,20 +2,24 @@ import React, { useState } from "react";
 import AddIcon from '@mui/icons-material/Add';
 import Fab from '@mui/material/Fab';
 import Zoom from '@mui/material/Zoom';
+import {MyDate} from "./Date";
 
 function CreateArea(props) {
+
     const [note, setNote] = useState({
         title: "",
-        content: ""
+        content: "",
+        modifiedDate: ""
     });
     const [isExpanded, setExpanded] = useState(false);
 
-    function set(e) {
+    function createNote(e) {
         const { name, value } = e.target;
         setNote(prev => {
             return {
                 ...prev,
-                [name]: value
+                [name]: value,
+                modifiedDate: MyDate()
             }
         })
     }
@@ -42,7 +46,8 @@ function CreateArea(props) {
                 });
             setNote({
                 title: "",
-                content: ""
+                content: "",
+                modifiedDate: ""
             });
         } else {
             console.log("No empty notes!");
@@ -52,10 +57,10 @@ function CreateArea(props) {
     return (
         <div>
             <form method="post" className="create-note">
-                <input onClick={() => { setExpanded(true) }} onChange={set} name="title" placeholder="Title" value={note.title} />
+                <input onClick={() => { setExpanded(true) }} onChange={createNote} name="title" placeholder="Title" value={note.title} />
                 {isExpanded &&
                     <textarea
-                        onChange={set}
+                        onChange={createNote}
                         name="content"
                         placeholder="Take a note..."
                         rows="3"

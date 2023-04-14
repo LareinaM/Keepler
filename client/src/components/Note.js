@@ -2,20 +2,23 @@ import React, { useState } from "react";
 import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
 import DoneIcon from '@mui/icons-material/Done';
+import {MyDate} from "./Date";
 
 function Note(props) {
     const [editing, setEditing] = useState(false);
     const [note, setNote] = useState({
         title: props.title,
-        content: props.content
+        content: props.content,
+        modifiedDate: props.modifiedDate
     });
 
-    function set(e) {
+    function editNote(e) {
         const { name, value } = e.target;
         setNote(prev => {
             return {
                 ...prev,
-                [name]: value
+                [name]: value,
+                modifiedDate: MyDate()
             }
         })
     }
@@ -35,8 +38,8 @@ function Note(props) {
         <div>
             {editing ? (
                 <form method="post" className="edit-note">
-                    <input onChange={set} name="title" placeholder="Title" value={note.title} />
-                    <textarea onChange={set} name="content" rows="3" value={note.content} />
+                    <input onChange={editNote} name="title" placeholder="Title" value={note.title} />
+                    <textarea onChange={editNote} name="content" rows="3" value={note.content} />
                     <button onClick={props.deleteItem}><DeleteIcon /></button>
                     <button onClick={finishEditing}><DoneIcon /></button>
                 </form>
@@ -44,6 +47,7 @@ function Note(props) {
                 <div className="note">
                     <h1>{note.title}</h1>
                     <p>{note.content}</p>
+                    <p className="dateCreated">{note.modifiedDate}</p>
                     <button onClick={props.deleteItem}><DeleteIcon /></button>
                     <button onClick={() => setEditing(true)}><EditIcon /></button>
                 </div>)}
