@@ -9,7 +9,9 @@ function CreateArea(props) {
     const [note, setNote] = useState({
         title: "",
         content: "",
-        modifiedDate: ""
+        modifiedDate: "",
+        // TODO
+        userID: null
     });
     const [isExpanded, setExpanded] = useState(false);
 
@@ -50,7 +52,7 @@ function CreateArea(props) {
                 modifiedDate: ""
             });
         } else {
-            console.log("No empty notes!");
+            alert("No empty notes!");
         }
     }
 

@@ -9,7 +9,9 @@ function Note(props) {
     const [note, setNote] = useState({
         title: props.title,
         content: props.content,
-        modifiedDate: props.modifiedDate
+        modifiedDate: props.modifiedDate,
+        // TODO
+        userID: null
     });
 
     function editNote(e) {
@@ -25,12 +27,12 @@ function Note(props) {
 
     async function finishEditing(e) {
         e.preventDefault();
-        const id = props.id;
+        const id = props.noteId;
         await fetch(`http://localhost:5000/update/${id}`, {
             method: "POST",
             headers: { "Content-Type": "application/json", },
             body: JSON.stringify(note),
-        })
+        });
         setEditing(false);
     }
 
