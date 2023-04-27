@@ -53,6 +53,26 @@ footer p {
   float: left;
 }
 
+.note-blue {
+  background: #ECF2FF;
+}
+
+.note-pink {
+  background: #fff7fb;
+}
+
+.note-purple {
+  background: #ECF3FF;
+}
+
+.note-green {
+  background: #ecfcff;
+}
+
+.note-yellow {
+  background: #FFF4D2;
+}
+
 .note h1 {
   font-size: 1.1em;
   margin-bottom: 6px;

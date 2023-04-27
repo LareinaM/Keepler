@@ -5,11 +5,12 @@ import Zoom from '@mui/material/Zoom';
 import {MyDate} from "./Date";
 
 function CreateArea(props) {
-
+    const classes = ['note-blue', 'note-pink', 'note-purple', 'note-green'];
     const [note, setNote] = useState({
         title: "",
         content: "",
         modifiedDate: "",
+        color: classes[Math.floor(Math.random() * classes.length)],
         // TODO
         userID: null
     });
@@ -29,6 +30,7 @@ function CreateArea(props) {
     async function submit(e) {
         if (note.title !== '' || note.content !== '') {
             e.preventDefault();
+            console.log("possting", note);
             const newNote = { ...note };
             await fetch("http://localhost:5000/", {
                 method: "POST",

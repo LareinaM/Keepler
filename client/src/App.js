@@ -30,7 +30,7 @@ function App() {
 
   function notesList() {
     return notesArr.map((note, idx) => {
-      return <Note key={note._id} noteId={note._id} title={note.title} content={note.content} modifiedDate={note.modifiedDate} deleteItem={() => deleteItem(note._id)}></Note>
+      return <Note key={note._id} noteId={note._id} color={note.color} title={note.title} content={note.content} modifiedDate={note.modifiedDate} deleteItem={() => deleteItem(note._id)}></Note>
     });
   }
 

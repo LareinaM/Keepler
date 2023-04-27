@@ -10,6 +10,7 @@ function Note(props) {
         title: props.title,
         content: props.content,
         modifiedDate: props.modifiedDate,
+        color: props.color !== undefined ? props.color : '',
         // TODO
         userID: null
     });
@@ -46,7 +47,7 @@ function Note(props) {
                     <button onClick={finishEditing}><DoneIcon /></button>
                 </form>
             ) : (
-                <div className="note">
+                <div className={"note " + note.color}>
                     <h1>{note.title}</h1>
                     <p>{note.content}</p>
                     <p className="dateCreated">{note.modifiedDate}</p>

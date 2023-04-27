@@ -23,9 +23,10 @@ const NoteSchema = new Schema({
     title: String,
     content: String,
     modifiedDate: String,
+    color: String,
     userID: String,
 });
-const NoteModel = mongoose.model('record', NoteSchema);
+const NoteModel = mongoose.model('note', NoteSchema);
 
 // This section will help you get a list of all the records.
 recordRoutes.route("/")
@@ -33,6 +34,7 @@ recordRoutes.route("/")
         const newNote = new NoteModel(req.body);
         NoteModel.insertMany([newNote])
             .then(res => {
+                console.log(newNote);
                 response.json(res);
             })
             .catch(err => {
