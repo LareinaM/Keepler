@@ -3,16 +3,19 @@ import AddIcon from '@mui/icons-material/Add';
 import Fab from '@mui/material/Fab';
 import Zoom from '@mui/material/Zoom';
 import {MyDate} from "./Date";
+import {colors} from './Colors';
+import { useSelectedTaskValue } from '../task-context';
 
 function CreateArea(props) {
-    const classes = ['note-blue', 'note-pink', 'note-purple', 'note-green'];
+    const { selectedTask } = useSelectedTaskValue();
     const [note, setNote] = useState({
         title: "",
         content: "",
         modifiedDate: "",
-        color: classes[Math.floor(Math.random() * classes.length)],
+        color: colors[Math.floor(Math.random() * colors.length)],
+        task: selectedTask,
         // TODO
-        userID: null
+        userID: null,
     });
     const [isExpanded, setExpanded] = useState(false);
 
@@ -30,7 +33,7 @@ function CreateArea(props) {
     async function submit(e) {
         if (note.title !== '' || note.content !== '') {
             e.preventDefault();
-            console.log("possting", note);
+            console.log("posting", note);
             const newNote = { ...note };
             await fetch("http://localhost:5000/", {
                 method: "POST",
@@ -41,7 +44,7 @@ function CreateArea(props) {
                 .then(actualData => {
                     const actualNote = { ...newNote, _id: actualData.insertedId };
                     props.addFunc(prev => {
-                        return [...prev, actualNote];
+                        return [actualNote, ...prev];
                     })
                 })
                 .catch(error => {

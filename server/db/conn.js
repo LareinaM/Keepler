@@ -1,10 +1,6 @@
 const { MongoClient } = require("mongodb");
 const mongoose = require("mongoose");
 const uri = process.env.ATLAS_URI;
-const client = new MongoClient(uri, {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
-});
  
 var _db;
  

@@ -11,6 +11,7 @@ function Note(props) {
         content: props.content,
         modifiedDate: props.modifiedDate,
         color: props.color !== undefined ? props.color : '',
+        task: props.task !== undefined ? props.task : 'TODAY',
         // TODO
         userID: null
     });

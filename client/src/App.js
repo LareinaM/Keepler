@@ -2,20 +2,27 @@ import React, { useEffect, useState } from "react";
 import { Route, Routes } from "react-router-dom";
 import Header from "./components/Header";
 // import Footer from "./components/Footer";
+import { Sidebar } from "./components/Sidebar";
 import Note from "./components/Note";
 import CreateArea from "./components/CreateArea";
 import SignupForm from "./components/Signup";
 import LoginForm from "./components/Login";
+import { useSelectedTaskValue } from './task-context';
 
 function App() {
   const [notesArr, setArr] = useState([]);
   const [userID, setUserId] = useState(null);
+  const [loggedin, toggleLoggedin] = useState(false);
+  const { selectedTask } = useSelectedTaskValue();
 
   useEffect(() => {
-    fetch('http://localhost:5000/')
+    fetch(`http://localhost:5000/get/${selectedTask}`)
       .then(response => response.json())
-      .then(actualData => setArr(actualData));
-  }, []);
+      .then(actualData => {
+        console.log(actualData);
+        return setArr(actualData);
+      });
+  }, [loggedin, selectedTask]);
 
   async function deleteItem(tarId) {
     await fetch(`http://localhost:5000/${tarId}`, {
@@ -30,21 +37,24 @@ function App() {
 
   function notesList() {
     return notesArr.map((note, idx) => {
-      return <Note key={note._id} noteId={note._id} color={note.color} title={note.title} content={note.content} modifiedDate={note.modifiedDate} deleteItem={() => deleteItem(note._id)}></Note>
+      return <Note key={note._id} noteId={note._id} task={note.task} color={note.color} title={note.title} content={note.content} modifiedDate={note.modifiedDate} deleteItem={() => deleteItem(note._id)}></Note>
     });
   }
 
   return (
     <div>
-      <Header />
+      <Header loggedin={loggedin} toggleLoggedin={toggleLoggedin} />
       <Routes>
         <Route exact path="/" element={
           <>
-            <CreateArea addFunc={setArr} />
-            {notesList()}
+            <Sidebar />
+            <div className='notes'>
+              <CreateArea addFunc={setArr} />
+              {notesList()}
+            </div>
           </>} />
-        <Route path="/signup" element={< SignupForm setID={setUserId} />}/>
-        <Route path="/login" element={< LoginForm />}/>
+        <Route path="/signup" element={< SignupForm setID={setUserId} toggleLoggedin={toggleLoggedin} />}/>
+        <Route path="/login" element={< LoginForm toggleLoggedin={toggleLoggedin} />}/>
       </Routes>
       {/* <Footer /> */}
     </div>

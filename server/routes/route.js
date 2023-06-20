@@ -1,61 +1,168 @@
-require("dotenv").config({ path: "./config.env" });
+//jshint esversion:6
+require('dotenv').config();
 const express = require("express");
-const recordRoutes = express.Router();
+const bodyParser = require("body-parser");
 const mongoose = require("mongoose");
-const _ = require("../db/conn");
-const ObjectId = require("mongodb").ObjectId;
+const { ObjectId } = require('mongodb')
+
+const session = require('express-session');
+const cookieParser = require('cookie-parser');
+const passport = require("passport");
+const passportLocalMongoose = require("passport-local-mongoose");
+
+const app = express();
+app.use(bodyParser.urlencoded({
+    extended: true
+}));
+app.use(cookieParser());
+app.use(session({
+    secret: 'Live long and prosper',
+    resave: false,
+    saveUninitialized: false
+}));
+app.use(passport.initialize());
+app.use(passport.session());
 
 const { Schema } = mongoose;
-
 const UserSchema = new Schema({
-    email: {
+    username: {
         type: String,
         required: true
     },
-    password: {
-        type: String,
-        required: true
-    }
+    password: String,
+    googleId: String
 });
-const UserModel = mongoose.model('user', UserSchema);
+UserSchema.plugin(passportLocalMongoose);
+
+const UserModel = new mongoose.model('User', UserSchema);
+passport.use(UserModel.createStrategy());
+
+// create cookie and store
+passport.serializeUser(function (user, done) {
+    done(null, user.id);
+});
+// destroy cookie
+passport.deserializeUser(function (id, done) {
+    UserModel.findById(id)
+        .then(function (user) {
+            done(null, user);
+        })
+        .catch(function (err) {
+            done(err, null);
+        });
+});
 
 const NoteSchema = new Schema({
     title: String,
     content: String,
     modifiedDate: String,
     color: String,
+    task: String,
     userID: String,
 });
-const NoteModel = mongoose.model('note', NoteSchema);
+const NoteModel = new mongoose.model('note', NoteSchema);
+
 
 // This section will help you get a list of all the records.
-recordRoutes.route("/")
+app.route('/logout')
+    .get(function (req, res) {
+        req.logout(function (err) {
+            if (err) { return next(err); }
+            res.redirect('/');
+        });
+    });
+
+app.route('/')
+    // add record
     .post(function (req, response) {
         const newNote = new NoteModel(req.body);
         NoteModel.insertMany([newNote])
             .then(res => {
-                console.log(newNote);
                 response.json(res);
             })
             .catch(err => {
                 throw err;
             });
-    })
+    });
+app.route('/get/:selectedTask')
+    // get record
     .get(function (req, res) {
-        NoteModel.find({ $or: [{ userID: { $exists: false } }, { userID: null }] })
-            .then(foundNotes => {
-                res.json(foundNotes);
+        // TODO
+        // console.log("getting", req.isAuthenticated());
+        // console.log(req.user);
+        var currTask = req.params.selectedTask;
+        var otherOpt =  currTask == 'TODAY' ? undefined : ''
+        if (req.isAuthenticated()) {
+            console.log("isAuthenticated");
+            NoteModel.find({ task: req.params.selectedTask, userID: '123' })
+                .then(foundNotes => {
+                    res.json(foundNotes);
+                })
+                .catch(err => {
+                    throw err;
+                });
+        } else {// $or: [{  }, {task: otherOpt}]
+            NoteModel.find({task: currTask , $or: [{ userID: { $exists: false } }, { userID: null }] })
+                .then(foundNotes => {
+                    res.json(foundNotes);
+                })
+                .catch(err => {
+                    throw err;
+                });
+        }
+    })
+
+app.route('/signup')
+    .post(function (req, res) {
+        UserModel.register(
+            new UserModel({ username: req.body.username }),
+            req.body.password,
+            function (err, user) {
+                if (err) {
+                    res.json({ signup: 'failure' });
+                } else {
+                    passport.authenticate('local')(req, res, function () {
+                        res.json({ signup: 'success' });
+                    })
+                }
+            });
+    });
+
+app.route('/login')
+    .post(function (req, res) {
+        // console.log("upon req", req.user);
+        // console.log("body", req.body);
+        const user = new UserModel(req.body);
+        // var result = {};
+        req.login(user, function (err) {
+            if (err) {
+                res.json({ login: 'failure' });
+            } else {
+                passport.authenticate('local')(req, res, function () {
+                    res.json({ login: 'success' });
+                })
+            }
+        });
+        // console.log("req", req.user); //=> yes
+    });
+
+app.route('/:tarId')
+    .delete((req, res) => {
+        console.log('deleting ', req.params.tarId);
+        NoteModel.deleteMany({ _id: ObjectId(req.params.tarId) })
+            .then(obj => {
+                res.json(obj);
             })
             .catch(err => {
                 throw err;
             });
     });
 
-recordRoutes.route("/signup")
-    .post(function (req, response) {
-        const newUser = new UserModel(req.body);
-        UserModel.insertMany([newUser])
+app.route('/update/:id')
+    .post((req, response) => {
+        NoteModel.updateOne({ _id: ObjectId(req.params.id) }, { $set: req.body })
             .then(res => {
+                console.log('1 obj updated', req.params.id, res);
                 response.json(res);
             })
             .catch(err => {
@@ -63,43 +170,4 @@ recordRoutes.route("/signup")
             });
     });
 
-recordRoutes.route("/login")
-    .post(function (req, response) {
-        UserModel.findOne({ email: req.body.email })
-            .then(foundUser => {
-                if (foundUser.password === req.body.password) {
-                    response.json({ validate: "success" });
-                } else {
-                    response.json({ validate: "failure" });
-                }
-            })
-            .catch(err => {
-                throw err;
-            });
-    });
-
-recordRoutes.route("/:tarId")
-    .delete((req, response) => {
-        NoteModel.deleteMany({ _id: ObjectId(req.params.tarId) })
-        .then(obj => {
-            response.json(obj);
-        })
-        .catch(err => {
-            throw err;
-        });
-    });
-
-recordRoutes.route("/update/:id")
-    .post((req, response) => {
-        console.log(req.params);
-        NoteModel.updateOne({ _id: ObjectId(req.params.id) }, { $set: req.body })
-        .then(res => {
-            console.log("1 obj updated", req.params.id, res);
-            response.json(res);
-        })
-        .catch(err => {
-            throw err;
-        });
-    });
-
-module.exports = recordRoutes;
+module.exports = app;

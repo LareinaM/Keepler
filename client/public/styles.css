@@ -15,7 +15,7 @@ body {
 }
 
 .header {
-  background-color: #f5ba13;
+  background-color: #FD8A8A;
   margin: auto -16px;
   padding: 16px 32px;
   box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.3);
@@ -43,6 +43,106 @@ footer p {
   color: #ccc;
 }
 
+/* Sidebar ============================================ */
+.sidebar {
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  min-width: 150px;
+  width: 15%;
+  height: calc(100vh);
+  padding-top: 74px;
+  position: fixed;
+  overflow-x: hidden;
+  overflow-y: hidden;
+  border-right: 1px solid #f1f1f1;
+}
+@media (max-width: '900px') {
+  .sidebar {
+    display: none;
+ }
+}
+.sidebar__dot {
+  margin-right: 10px;
+  font-size: 30px;
+}
+.sidebar__middle {
+  margin-top: 20px;
+  margin-bottom: 20px;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  border-bottom: 1px solid #f1f1f1;
+  padding-left: 10px;
+  cursor: pointer;
+}
+.sidebar__middle span {
+  color: #000 8a;
+  margin-right: 10px;
+}
+.sidebar__middle span svg.hidden-projects {
+  -webkit-transform: rotate(-90deg);
+  transform: rotate(-90deg);
+}
+.sidebar__middle h2 {
+  margin: 0;
+  color: #333;
+  font-size: 15px;
+  font-weight: bold;
+  padding-bottom: 20px;
+}
+.sidebar__generic li {
+  list-style-type: none;
+  color: #333;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  cursor: pointer;
+  line-height: 1.5;
+  font-size: 15px;
+  padding-left: 0;
+  padding-right: 0;
+}
+.sidebar__generic li div:nth-child(1) {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  padding: 10px 0 10px 10px;
+  width: 100%;
+}
+.sidebar__generic li div:nth-child(1) span:first-of-type {
+  margin-right: 10px;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+}
+.sidebar__generic li div:nth-child(1) span:first-of-type svg {
+  width: 18px;
+  height: 18px;
+  color: #555;
+}
+.sidebar__generic li.active, .sidebar__generic li:hover {
+  font-weight: bold;
+  background-color: #fff;
+}
+
+/* Notes ============================================ */
+.notes {
+  width: 85%;
+  margin-left: 17%;
+  border-right: 1px solid #f1f1f1;
+  min-height: calc(100vh);
+  vertical-align: top;
+  padding-left: 40px;
+  padding-right: 40px;
+  padding-top: 80px;
+  padding-bottom: 84px;
+}
 .note {
   background: #fff;
   border-radius: 7px;
@@ -100,7 +200,8 @@ footer p {
   position: relative;
   float: right;
   margin-right: 10px;
-  color: #f5ba13;
+  background-color: #fff;
+  color: #9EA1D4;
   border: none;
   width: 36px;
   height: 36px;
@@ -109,9 +210,10 @@ footer p {
   border-radius: 0.25rem;
 }
 
+/* Creation ============================================ */
 form.create-note {
   position: relative;
-  width: 480px;
+  width: 50%;
   margin: 30px auto 20px auto;
   background: #fff;
   padding: 15px;
@@ -134,7 +236,7 @@ form.create-note button {
   position: absolute;
   right: 18px;
   bottom: -18px;
-  background: #f5ba13;
+  background: #8a8afd;
   color: #fff;
   border: none;
   border-radius: 50%;
