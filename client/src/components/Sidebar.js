@@ -1,58 +1,36 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from "react";
 import {
-  FaInbox,
-  FaRegCalendarAlt,
+    FaInbox,
+    FaRegCalendarAlt,
+    FaLightbulb
 } from 'react-icons/fa';
 import { useSelectedTaskValue } from '../task-context';
+import { AddTask } from './AddTask';
+import { Task } from './Task';
 
 export const Sidebar = () => {
-  const { setSelectedTask } = useSelectedTaskValue();
-  const [active, setActive] = useState('today');
+    const { setSelectedTask } = useSelectedTaskValue();
+    const [active, setActive] = useState('today');
+    const [tasks, setTasks] = useState([]);
 
-  return (
-    <div className="sidebar" data-testid="sidebar">
-      <ul className="sidebar__generic">
-        <li
-          data-testid="today"
-          className={active === 'today' ? 'active' : undefined}
-        >
-          <div
-            data-testid="today-action"
-            aria-label="Show today tasks"
-            tabIndex={0}
-            role="button"
-            onClick={() => {
-              setActive('today');
-              setSelectedTask('TODAY');
-            }}
-          >
-            <span>
-              <FaInbox />
-            </span>
-            <span>Today</span>
-          </div>
-        </li>
-        <li
-          data-testid="thoughts"
-          className={active === 'thoughts' ? 'active' : undefined}
-        >
-          <div
-            data-testid="thoughts-action"
-            aria-label="Some thoughts"
-            tabIndex={0}
-            role="button"
-            onClick={() => {
-              setActive('thoughts');
-              setSelectedTask('THOUGHTS');
-            }}
-          >
-            <span>
-              <FaRegCalendarAlt />
-            </span>
-            <span>Thoughts</span>
-          </div>
-        </li>
-      </ul>
-    </div>
-  );
+    useEffect(() => {
+        fetch(`http://localhost:5000/get/tasks`)
+            .then(response => response.json())
+            .then(actualData => {
+                setTasks(actualData);
+            });
+    }, []);
+
+    return (
+        <div className="sidebar" data-testid="sidebar">
+            <ul className="sidebar__generic">
+                <Task taskName='Today' active={active} setActive={setActive} setSelectedTask={setSelectedTask} icon={<FaInbox />} />
+                <Task taskName='Thoughts' active={active} setActive={setActive} setSelectedTask={setSelectedTask} icon={<FaLightbulb />} />
+                {tasks.map((task, idx) => {
+                    return <Task key={idx} taskName={task.taskName} active={active} setActive={setActive} setSelectedTask={setSelectedTask} icon={<FaRegCalendarAlt />} />
+                })}
+            </ul>
+            <AddTask setTasks={setTasks} />
+        </div>
+    );
 };

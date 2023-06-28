@@ -19,6 +19,7 @@ body {
   margin: auto -16px;
   padding: 16px 32px;
   box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.3);
+  font-family: 'Ysabeau Office', sans-serif;
 }
 
 .header h1 {
@@ -59,40 +60,13 @@ footer p {
   overflow-y: hidden;
   border-right: 1px solid #f1f1f1;
 }
+
 @media (max-width: '900px') {
   .sidebar {
     display: none;
- }
+  }
 }
-.sidebar__dot {
-  margin-right: 10px;
-  font-size: 30px;
-}
-.sidebar__middle {
-  margin-top: 20px;
-  margin-bottom: 20px;
-  display: -webkit-box;
-  display: -ms-flexbox;
-  display: flex;
-  border-bottom: 1px solid #f1f1f1;
-  padding-left: 10px;
-  cursor: pointer;
-}
-.sidebar__middle span {
-  color: #000 8a;
-  margin-right: 10px;
-}
-.sidebar__middle span svg.hidden-projects {
-  -webkit-transform: rotate(-90deg);
-  transform: rotate(-90deg);
-}
-.sidebar__middle h2 {
-  margin: 0;
-  color: #333;
-  font-size: 15px;
-  font-weight: bold;
-  padding-bottom: 20px;
-}
+
 .sidebar__generic li {
   list-style-type: none;
   color: #333;
@@ -105,6 +79,7 @@ footer p {
   padding-left: 0;
   padding-right: 0;
 }
+
 .sidebar__generic li div:nth-child(1) {
   display: -webkit-box;
   display: -ms-flexbox;
@@ -112,6 +87,7 @@ footer p {
   padding: 10px 0 10px 10px;
   width: 100%;
 }
+
 .sidebar__generic li div:nth-child(1) span:first-of-type {
   margin-right: 10px;
   display: -webkit-box;
@@ -121,14 +97,68 @@ footer p {
   -ms-flex-align: center;
   align-items: center;
 }
+
 .sidebar__generic li div:nth-child(1) span:first-of-type svg {
   width: 18px;
   height: 18px;
   color: #555;
 }
-.sidebar__generic li.active, .sidebar__generic li:hover {
+
+.sidebar__generic li.active,
+.sidebar__generic li:hover {
   font-weight: bold;
   background-color: #fff;
+}
+
+.add-task {
+  padding-left: 13px;
+  padding-right: 20px;
+  margin-top: 20px;
+}
+
+.add-task__input {
+  margin-bottom: 20px;
+}
+
+.add-task__name {
+  width: 100%;
+  border: 1px solid #ddd;
+  background-color: white !important;
+  border-radius: 3px;
+  height: 35px;
+  padding-left: 10px;
+  padding-right: 10px;
+}
+
+.add-task__plus {
+  margin-right: 10px;
+}
+
+.add-task__submit {
+  width: '100px';
+  background-color: #fd7171;
+  color: #fff !important;
+  border: 1px solid transparent;
+  margin-right: 5px;
+  margin-top: 10px;
+  font-weight: bold;
+  font-size: 13px !important;
+  line-height: 17px;
+  padding: 6px 12px 7px 12px;
+  position: relative;
+  display: inline-block;
+  white-space: nowrap;
+  border-radius: 3px !important;
+  text-decoration: none !important;
+  text-align: center;
+  cursor: pointer;
+}
+
+.add-task__cancel {
+  color: #555;
+  cursor: pointer;
+  font-size: 14px;
+  margin: 2px 5px;
 }
 
 /* Notes ============================================ */
@@ -142,7 +172,9 @@ footer p {
   padding-right: 40px;
   padding-top: 80px;
   padding-bottom: 84px;
+  font-family: 'Red Hat Mono', sans-serif;
 }
+
 .note {
   background: #fff;
   border-radius: 7px;
@@ -228,7 +260,6 @@ form.create-note textarea {
   padding: 4px;
   outline: none;
   font-size: 1.2em;
-  font-family: inherit;
   resize: none;
 }
 
@@ -263,7 +294,6 @@ form.edit-note textarea {
   border: none;
   outline: none;
   font-size: 1.2em;
-  font-family: inherit;
   resize: none;
 }
 
@@ -302,5 +332,5 @@ form.edit-note button {
 .btn-yellow {
   background-color: #f5ba13;
   border-color: #f5ba13;
-  color:#fff
+  color: #fff
 }

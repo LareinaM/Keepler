@@ -2,8 +2,8 @@ import React, { useState } from "react";
 import AddIcon from '@mui/icons-material/Add';
 import Fab from '@mui/material/Fab';
 import Zoom from '@mui/material/Zoom';
-import {MyDate} from "./Date";
-import {colors} from './Colors';
+import { MyDate } from "./Date";
+import { colors } from './Colors';
 import { useSelectedTaskValue } from '../task-context';
 
 function CreateArea(props) {
@@ -25,6 +25,7 @@ function CreateArea(props) {
             return {
                 ...prev,
                 [name]: value,
+                task: selectedTask,
                 modifiedDate: MyDate()
             }
         })
@@ -33,9 +34,8 @@ function CreateArea(props) {
     async function submit(e) {
         if (note.title !== '' || note.content !== '') {
             e.preventDefault();
-            console.log("posting", note);
             const newNote = { ...note };
-            await fetch("http://localhost:5000/", {
+            await fetch("http://localhost:5000/add/note/", {
                 method: "POST",
                 headers: { "Content-Type": "application/json", },
                 body: JSON.stringify(newNote),
@@ -43,9 +43,7 @@ function CreateArea(props) {
                 .then(result => result.json())
                 .then(actualData => {
                     const actualNote = { ...newNote, _id: actualData.insertedId };
-                    props.addFunc(prev => {
-                        return [actualNote, ...prev];
-                    })
+                    props.addFunc(prev => [actualNote, ...prev])
                 })
                 .catch(error => {
                     window.alert(error);

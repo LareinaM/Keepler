@@ -16,16 +16,15 @@ function App() {
   const { selectedTask } = useSelectedTaskValue();
 
   useEffect(() => {
-    fetch(`http://localhost:5000/get/${selectedTask}`)
+    fetch(`http://localhost:5000/get/notes/${selectedTask}`)
       .then(response => response.json())
       .then(actualData => {
-        console.log(actualData);
-        return setArr(actualData);
+        setArr(actualData);
       });
   }, [loggedin, selectedTask]);
 
   async function deleteItem(tarId) {
-    await fetch(`http://localhost:5000/${tarId}`, {
+    await fetch(`http://localhost:5000/delete/${tarId}`, {
       method: "DELETE"
     });
     setArr(prev => {
@@ -37,7 +36,11 @@ function App() {
 
   function notesList() {
     return notesArr.map((note, idx) => {
-      return <Note key={note._id} noteId={note._id} task={note.task} color={note.color} title={note.title} content={note.content} modifiedDate={note.modifiedDate} deleteItem={() => deleteItem(note._id)}></Note>
+      var key = note._id;
+      if (key === undefined) {
+        key = idx.toString();
+      }
+      return <Note key={key} noteId={note._id} task={note.task} color={note.color} title={note.title} content={note.content} modifiedDate={note.modifiedDate} deleteItem={() => deleteItem(note._id)}></Note>
     });
   }
 
@@ -53,8 +56,8 @@ function App() {
               {notesList()}
             </div>
           </>} />
-        <Route path="/signup" element={< SignupForm setID={setUserId} toggleLoggedin={toggleLoggedin} />}/>
-        <Route path="/login" element={< LoginForm toggleLoggedin={toggleLoggedin} />}/>
+        <Route path="/signup" element={< SignupForm setID={setUserId} toggleLoggedin={toggleLoggedin} />} />
+        <Route path="/login" element={< LoginForm toggleLoggedin={toggleLoggedin} />} />
       </Routes>
       {/* <Footer /> */}
     </div>
